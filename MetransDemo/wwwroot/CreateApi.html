@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Vytvořit novou objednávku (API)</title>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css" />
+
+    <link rel="stylesheet" href="/css/site.css" />
+    <script>
+        async function createOrder(event) {
+            event.preventDefault();
+
+            const customerId = document.getElementById('customerId').value;
+            const statusId = document.getElementById('statusId').value;
+            const orderDate = document.getElementById('orderDate').value;
+            const amount = document.getElementById('amount').value;
+
+            const orderData = {
+                CustomerId: parseInt(customerId),
+                StatusId: parseInt(statusId),
+                OrderDate: orderDate,
+                Amount: parseFloat(amount)
+            };
+
+            try {
+                const response = await fetch(' /api/OrdersApi', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (response.ok) {
+                    window.location.href = '/Orders';
+                } else {
+                    const errorData = await response.json();
+                    console.error('API Error:', errorData);
+                }
+            } catch (error) {
+                console.error('Network Error:', error);
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Vytvořit novou objednávku</h1>
+
+        <form id="orderForm" onsubmit="createOrder(event)">
+
+            <div class="form-group">
+                <label for="customerId">ID Zákazníka:</label>
+                <input type="number" id="customerId" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="statusId">ID Statusu:</label>
+                <input type="number" id="statusId" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="orderDate">Datum a čas objednávky:</label>
+                <input type="datetime-local" id="orderDate" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Množství:</label>
+                <input type="number" id="amount" class="form-control" required />
+            </div>
+
+            <div class="form-group mt-2">
+                <button type="submit" class="btn btn-primary">Vytvořit Objednávku</button>
+                <a href="/Orders" class="btn btn-secondary">Zpět na seznam</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

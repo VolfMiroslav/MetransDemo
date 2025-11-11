@@ -1,0 +1,101 @@
+﻿@model IEnumerable<MetransDemo.Models.Order>
+
+<style>
+	.high-value {
+		font-weight: bold;
+	}
+
+	.status-red {
+		color: red !important; 
+	}
+</style>
+
+@{
+	ViewData["Title"] = "Objednávky";
+}
+
+<h1>Objednávky</h1>
+
+<p>
+	<a asp-action="Create">Přidat objednávku</a>
+</p>
+<p>
+	<a href="~/CreateApi.html">Přidat objednávku (API)</a>
+</p>
+<form asp-controller="Orders" asp-action="Index" method="get">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.OrderDate)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Amount)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Customer)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Status)
+				</th>
+				<th></th>
+			</tr>
+			<tr>
+				<td>
+					<label for="fromDate">Od:</label>
+					<input type="datetime-local" name="fromDate"
+						   class="form-control form-control-sm"
+						   value="@ViewBag.CurrentFromDate" />
+
+					<label for="toDate">Do:</label>
+					<input type="datetime-local" name="toDate"
+						   class="form-control form-control-sm"
+						   value="@ViewBag.CurrentToDate" />
+				</td>
+				<td>&nbsp;</td> @* Empty column for Amount *@
+
+				<td>
+					<select name="customerFilterId" class="form-control"
+							asp-items="ViewBag.CustomerList">
+					</select>
+				</td>
+
+				<td>
+					<select name="statusFilterId" class="form-control"
+							asp-items="ViewBag.StatusList">
+					</select>
+				</td>
+
+				<td>
+					<input type="submit" value="Filtrovat" class="btn btn-sm btn-primary" />
+					<a asp-action="Index" class="btn btn-sm btn-secondary">Zrušit</a>
+				</td>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr class="
+					@(item.Amount > 10000 ? "high-value" : "")
+					@(item.Status.Code == "C" ? "status-red" : "")">
+					<td>
+						@Html.DisplayFor(modelItem => item.OrderDate)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Amount)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Customer.Name)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Status.Code)
+					</td>
+					<td>
+						<a asp-action="Edit" asp-route-id="@item.Id">Upravit</a> |
+						<a asp-action="Delete" asp-route-id="@item.Id">Smazat</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</form>

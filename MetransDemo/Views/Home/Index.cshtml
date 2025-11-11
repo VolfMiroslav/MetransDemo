@@ -1,0 +1,179 @@
+﻿@{
+	ViewData["Title"] = "Domovská stránka";
+}
+
+<div class="text-center">
+	<h1 class="display-4">Vítejte</h1>
+</div>
+
+<div class="row mb-2">
+	<div class="col-md-4">
+		<div class="card shadow-sm">
+			<div class="card-header bg-success text-white">
+				<h4 class="mb-0">Celkový obrat za den</h4>
+			</div>
+			<div class="card-body">
+
+				<form asp-controller="Home" asp-action="Index" method="get" class="mb-4 d-flex align-items-center">
+					<label for="dailySumDate" class="me-2 fw-bold">Vyberte datum:</label>
+					<input type="date"
+						   name="dailySumDate"
+						   class="form-control me-3"
+						   value="@ViewData["DailySumDate"]" />
+
+					<button type="submit" class="btn btn-success">Zobrazit</button>
+
+					<input type="hidden" name="yearlySumStartDate" value="@ViewData["YearlySumStartDate"]" />
+					<input type="hidden" name="yearlySumEndDate" value="@ViewData["YearlySumEndDate"]" />
+					<input type="hidden" name="avgStartDate" value="@ViewData["AvgStartDate"]" />
+					<input type="hidden" name="avgEndDate" value="@ViewData["AvgEndDate"]" />
+					<input type="hidden" name="topCustomerStartDate" value="@ViewData["TopCustomerStartDate"]" />
+					<input type="hidden" name="topCustomerEndDate" value="@ViewData["TopCustomerEndDate"]" />
+				</form>
+
+				<div class="alert alert-success mt-3" role="alert">
+					<h5 class="alert-heading">Součet pro datum @ViewData["DailySumDate"]:</h5>
+					<p class="fs-2 mb-0">
+						@ViewData["TotalAmount"]
+					</p>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6 mb-4">
+		<div class="card shadow-sm">
+			<div class="card-header bg-success text-white">
+				<h4 class="mb-0">Celkový obrat za období</h4>
+			</div>
+			<div class="card-body">
+
+				<form asp-controller="Home" asp-action="Index" method="get">
+					<div class="d-flex align-items-center mb-3">
+						<label for="yearlySumStartDate" class="me-2 fw-bold">Rozsah:</label>
+						<input type="date"
+							   name="yearlySumStartDate"
+							   class="form-control me-2"
+							   value="@ViewData["YearlySumStartDate"]"
+							   title="Od:" />
+
+						<input type="date"
+							   name="yearlySumEndDate"
+							   class="form-control me-3"
+							   value="@ViewData["YearlySumEndDate"]"
+							   title="Do:" />
+
+						<button type="submit" class="btn btn-success">Zobrazit</button>
+					</div>
+
+					<input type="hidden" name="dailySumDate" value="@ViewData["DailySumDate"]" />
+					<input type="hidden" name="avgStartDate" value="@ViewData["AvgStartDate"]" />
+					<input type="hidden" name="avgEndDate" value="@ViewData["AvgEndDate"]" />
+					<input type="hidden" name="topCustomerStartDate" value="@ViewData["TopCustomerStartDate"]" />
+					<input type="hidden" name="topCustomerEndDate" value="@ViewData["TopCustomerEndDate"]" />
+				</form>
+
+				<div class="alert alert-success mt-3" role="alert">
+					<h5 class="alert-heading">Součet pro období (@ViewData["YearlyStartDate"] až @ViewData["YearlyEndDate"]):</h5>
+					<p class="fs-2 mb-0">
+						@ViewData["YearlyTotalAmount"]
+					</p>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6 mb-4">
+		<div class="card shadow-sm">
+			<div class="card-header bg-success text-white">
+				<h4 class="mb-0">Průměrná objednávka</h4>
+			</div>
+			<div class="card-body">
+
+				<form asp-controller="Home" asp-action="Index" method="get">
+					<div class="d-flex align-items-center mb-3">
+						<label for="avgStartDate" class="me-2 fw-bold">Rozsah:</label>
+						<input type="date"
+							   name="avgStartDate"
+							   class="form-control me-2"
+							   value="@ViewData["AvgStartDate"]"
+							   title="Od:" />
+
+						<input type="date"
+							   name="avgEndDate"
+							   class="form-control me-3"
+							   value="@ViewData["AvgEndDate"]"
+							   title="Do:" />
+
+						<button type="submit" class="btn btn-success">Zobrazit</button>
+					</div>
+
+					<input type="hidden" name="dailySumDate" value="@ViewData["DailySumDate"]" />
+					<input type="hidden" name="yearlySumStartDate" value="@ViewData["YearlySumStartDate"]" />
+					<input type="hidden" name="yearlySumEndDate" value="@ViewData["YearlySumEndDate"]" />
+					<input type="hidden" name="topCustomerStartDate" value="@ViewData["TopCustomerStartDate"]" />
+					<input type="hidden" name="topCustomerEndDate" value="@ViewData["TopCustomerEndDate"]" />
+				</form>
+
+				<div class="alert alert-success mt-3" role="alert">
+					<h5 class="alert-heading">
+						Průměr za období (@ViewData["AvgStartDate"] až @ViewData["AvgEndDate"]):
+					</h5>
+					<p class="fs-2 mb-0">
+						@ViewData["AverageAmount"]
+					</p>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="card shadow-sm">
+			<div class="card-header bg-success text-white">
+				<h4 class="mb-0">Zákazník s největšími objednávky</h4>
+			</div>
+			<div class="card-body">
+
+				<form asp-controller="Home" asp-action="Index" method="get">
+					<div class="d-flex align-items-center mb-3">
+						<label for="topCustomerStartDate" class="me-2 fw-bold">Rozsah:</label>
+						<input type="date"
+							   name="topCustomerStartDate"
+							   class="form-control me-2"
+							   value="@ViewData["TopCustomerStartDate"]"
+							   title="Od:" />
+
+						<input type="date"
+							   name="topCustomerEndDate"
+							   class="form-control me-3"
+							   value="@ViewData["TopCustomerEndDate"]"
+							   title="Do:" />
+
+						<button type="submit" class="btn btn-success">Zobrazit</button>
+					</div>
+
+					<input type="hidden" name="dailySumDate" value="@ViewData["DailySumDate"]" />
+					<input type="hidden" name="yearlySumStartDate" value="@ViewData["YearlySumStartDate"]" />
+					<input type="hidden" name="yearlySumEndDate" value="@ViewData["YearlySumEndDate"]" />
+					<input type="hidden" name="avgStartDate" value="@ViewData["AvgStartDate"]" />
+					<input type="hidden" name="avgEndDate" value="@ViewData["AvgEndDate"]" />
+				</form>
+
+				<div class="alert alert-success mt-3" role="alert">
+					<h5 class="alert-heading">
+						Top zákazník mezi (@ViewData["TopCustomerStartDate"] až @ViewData["TopCustomerEndDate"]):
+					</h5>
+					<p class="fs-4 mb-1">
+						Zákazník: @ViewData["TopCustomerName"]
+					</p>
+					<p class="fs-2 mb-0 text-danger">
+						Celkem: @ViewData["TopCustomerAmount"]
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
